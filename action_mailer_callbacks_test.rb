@@ -60,74 +60,74 @@ class ActionMailerCallbacksTest < Test::Unit::TestCase
     TestMailer.afters = []
   end
   
-  should 'invoke before with block' do
+  def test_invoke_before_with_block
     TestMailer.deliver_always
-    assert_true TestMailer.befores.include?(:before_block)
+    assert TestMailer.befores.include?(:before_block)
   end
     
-  should 'invoke before with symbol' do
+  def test_invoke_before_with_symbol
     TestMailer.deliver_always
-    assert_true TestMailer.befores.include?(:before_symbol)
+    assert TestMailer.befores.include?(:before_symbol)
   end
     
-  should 'invoke before with string' do
+  def test_invoke_before_with_string
     TestMailer.deliver_always
-    assert_true TestMailer.befores.include?(:before_string)
+    assert TestMailer.befores.include?(:before_string)
   end
     
-  should 'invoke before when in only option' do
+  def test_invoke_before_when_in_only_option
     TestMailer.deliver_in_only
-    assert_true TestMailer.befores.include?(:before_only)
+    assert TestMailer.befores.include?(:before_only)
   end
     
-  should 'invoke before when not in except option' do
+  def test_invoke_before_when_not_in_except_option
     TestMailer.deliver_not_in_except
-    assert_true TestMailer.befores.include?(:before_except)
+    assert TestMailer.befores.include?(:before_except)
   end
     
-  should 'not invoke before when not in only option' do
+  def test_not_invoke_before_when_not_in_only_option
     TestMailer.deliver_not_in_only
-    assert_false TestMailer.befores.include?(:before_only)
+    assert !TestMailer.befores.include?(:before_only)
   end
     
-  should 'not invoke before when in except option' do
+  def not_invoke_before_when_in_except_option
     TestMailer.deliver_in_except
-    assert_false TestMailer.befores.include?(:before_except)
+    assert !TestMailer.befores.include?(:before_except)
   end
   
-  should 'invoke after with block' do
+  def test_invoke_after_with_block
     TestMailer.deliver_always
-    assert_true TestMailer.afters.include?(:after_block)
+    assert TestMailer.afters.include?(:after_block)
   end
     
-  should 'invoke after with symbol' do
+  def test_invoke_after_with_symbol
     TestMailer.deliver_always
-    assert_true TestMailer.afters.include?(:after_symbol)
+    assert TestMailer.afters.include?(:after_symbol)
   end
     
-  should 'invoke after with string' do
+  def test_invoke_after_with_string
     TestMailer.deliver_always
-    assert_true TestMailer.afters.include?(:after_string)
+    assert TestMailer.afters.include?(:after_string)
   end
     
-  should 'invoke after when in only option' do
+  def test_invoke_after_when_in_only_option
     TestMailer.deliver_in_only
-    assert_true TestMailer.afters.include?(:after_only)
+    assert TestMailer.afters.include?(:after_only)
   end
     
-  should 'invoke after when not in except option' do
+  def test_invoke_after_when_not_in_except_option
     TestMailer.deliver_not_in_except
-    assert_true TestMailer.afters.include?(:after_except)
+    assert TestMailer.afters.include?(:after_except)
   end
     
-  should 'not invoke after when not in only option' do
+  def test_not_invoke_after_when_not_in_only_option
     TestMailer.deliver_not_in_only
-    assert_false TestMailer.afters.include?(:after_only)
+    assert !TestMailer.afters.include?(:after_only)
   end
     
-  should 'not invoke after when in except option' do
+  def test_not_invoke_after_when_in_except_option
     TestMailer.deliver_in_except
-    assert_false TestMailer.afters.include?(:after_except)
+    assert !TestMailer.afters.include?(:after_except)
   end
   
 end
