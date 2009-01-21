@@ -5,7 +5,7 @@ Version 1.0
 == Installation
 
 Drop "action_mailer_callbacks.rb" into either your "lib" directory.
-Drop "action_mailer_callbacks_test.rb" into your "test/units" directory.
+Drop "action_mailer_callbacks_test.rb" into your "test/unit" directory.
 
 In the future, this will be made a proper plugin to make installation easier...
 
@@ -13,7 +13,7 @@ In the future, this will be made a proper plugin to make installation easier...
 
 ActionMailer callbacks provides basic callback support for ActionMailer.  It providers similar functionality to before and after filters available in ActionController.
 
-== How Do I Use It?= 
+== How Do I Use It?
 
 There are 2 main ways to define a callback. In each case, the callback method is passed the mail as the only argument.
 

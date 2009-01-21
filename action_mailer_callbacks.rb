@@ -1,4 +1,4 @@
-ass ActionMailer::Base
+class ActionMailer::Base
   cattr_accessor :callback_chain_halted
 
   def self.before_deliver(*args, &block)
