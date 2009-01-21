@@ -1,4 +1,6 @@
-class ActionMailer::Base
+ass ActionMailer::Base
+  cattr_accessor :callback_chain_halted
+
   def self.before_deliver(*args, &block)
     delivery_callback :before, *args, &block
   end
@@ -39,9 +41,11 @@ class ActionMailer::Base
   alias_method_chain :create!, :method_stored
   
   def deliver_with_callbacks!(mail = @mail)
-    invoke_delivery_callbacks(:before, mail)
-    deliver_without_callbacks!
-    invoke_delivery_callbacks(:after, mail)
+    self.class.callback_chain_halted = false
+    if invoke_delivery_callbacks(:before, mail)
+      deliver_without_callbacks!
+      invoke_delivery_callbacks(:after, mail)
+    end
   end
   alias_method_chain :deliver!, :callbacks
 
@@ -50,6 +54,8 @@ class ActionMailer::Base
     method = mail.instance_variable_get '@method_name'
     
     callbacks.each do |callable, options|
+      break if callback_chain_halted
+      
       only = [].push(*options[:only]) if options[:only] && method
       next if only && !(only.include?(method.to_s) || only.include?(method.to_sym))
       
@@ -62,6 +68,12 @@ class ActionMailer::Base
         send(callable, mail)
       end
     end
+
+    return !callback_chain_halted
+  end
+
+  def self.halt_callback_chain
+    self.callback_chain_halted = true
   end
   
 end

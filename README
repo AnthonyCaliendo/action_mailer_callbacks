@@ -46,9 +46,23 @@ class FooMailer < ActionMailer::Base
  ...
 end
 
-== Limitations
+== What About Halting the Chain?
 
-CURRENTLY, THE before_deliver CALLBACK DOES NOT HALT EXECUTION.  That may be added in the future, but in ther interim you will need to raise to halt.
+You can halt the chain in either a before or after callback.  In order to do this, just call +halt_callback_chain+ in the block (or +self.class.halt_callback_chain+ in an instance method).
+If the chain is halted in a before callback, the email will *NOT* be delivered and no other callbacks will be invoked (either any after callbacks or any remaining before callbacks).
+If the chain is halted in an after callback, the email will have already been sent and all before callbacks would have run, but any remaining after callbacks will not be invoked.
+
+class FooMailer < ActionMailer::Base
+  before_deliver do |mail|
+    halt_callback_chain if invalid_mail?(mail)
+  end
+
+  after_deliver :abort
+
+  def abort(mail)
+    self.class.halt_callback_chain
+  end
+end
 
 == Anything Planned?
 
@@ -56,8 +70,9 @@ First, I would like to clean up the code a bit (extract most of the logic into a
 
 In terms of features, I would like to do at least three more things with this:
 1) Make it a proper plugin
-2) Allow the before_deliver method to halt sending the email
-3) Add an around_deliver callback which would allow around advice.
+2) Add an around_deliver callback which would allow around advice.
+3) Add ability to skip filters
+4) Add ability to prepend filters in the chain
 
 Feedback is welcomed.
 
