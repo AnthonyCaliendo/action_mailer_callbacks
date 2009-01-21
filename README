@@ -1,21 +1,20 @@
 = ActionMailer Callbacks
 
-Version 1.0
+ActionMailer callbacks provides basic callback support for ActionMailer.  It providers similar functionality to before and after filters available in ActionController.
 
 == Installation
 
-Drop "action_mailer_callbacks.rb" into either your "lib" directory.
-Drop "action_mailer_callbacks_test.rb" into your "test/unit" directory.
+Install as a plugin in your vendor/plugins directory.
 
-In the future, this will be made a proper plugin to make installation easier...
+If your rails version supports it, you can do:
 
-== What Is It?
+script/plugin install git://github.com/AnthonyCaliendo/action_mailer_callbacks.git
 
-ActionMailer callbacks provides basic callback support for ActionMailer.  It providers similar functionality to before and after filters available in ActionController.
+
 
 == How Do I Use It?
 
-There are 2 main ways to define a callback. In each case, the callback method is passed the mail as the only argument.
+There are 2 main ways to define a callback. In each case, the callback method/block is passed the mail object as the only argument.
 
 You may define a callback using a block:
 class FooMailer < ActionMailer::Base
@@ -46,6 +45,8 @@ class FooMailer < ActionMailer::Base
  ...
 end
 
+
+
 == What About Halting the Chain?
 
 You can halt the chain in either a before or after callback.  In order to do this, just call +halt_callback_chain+ in the block (or +self.class.halt_callback_chain+ in an instance method).
@@ -64,18 +65,20 @@ class FooMailer < ActionMailer::Base
   end
 end
 
+
+
 == Anything Planned?
 
 First, I would like to clean up the code a bit (extract most of the logic into a separate module, etc.).  I apologize for the messiness of the code, at the time I wrote it I just wanted something "that worked" and I was pressed for time.
 
 In terms of features, I would like to do at least three more things with this:
-1) Make it a proper plugin
-2) Add an around_deliver callback which would allow around advice.
-3) Add ability to skip filters
-4) Add ability to prepend filters in the chain
+1) Add an around_deliver callback which would allow around advice
+2) Add ability to skip filters
+3) Add ability to prepend filters in the chain
 
 Feedback is welcomed.
 
-== License
 
-ActionMailer Callbacks is available under an MIT-style license.
+
+
+Copyright (c) 2009 Anthony Caliendo, released under the MIT license
