@@ -1,0 +1,66 @@
+= ActionMailer Callbacks
+
+Version 1.0
+
+== Installation
+
+Drop "action_mailer_callbacks.rb" into either your "lib" directory.
+Drop "action_mailer_callbacks_test.rb" into your "test/units" directory.
+
+In the future, this will be made a proper plugin to make installation easier...
+
+== What Is It?
+
+ActionMailer callbacks provides basic callback support for ActionMailer.  It providers similar functionality to before and after filters available in ActionController.
+
+== How Do I Use It?= 
+
+There are 2 main ways to define a callback. In each case, the callback method is passed the mail as the only argument.
+
+You may define a callback using a block:
+class FooMailer < ActionMailer::Base
+  after_deliver do |mail|
+    ...
+  end
+end
+
+You may also define a callback using a symbol/string for a method name:
+class FooMailer < ActionMailer::Base
+  before_deliver :append_advertisement
+
+  def append_advertisement(mail)
+    ...
+  end
+end
+
+Callbacks take options which can be used to define which mail types (i.e. methods) they will be applied to.
+These options take the format of *only* and *except*.
+  - An *only* callback will only be run for methods which match the passed method names.
+  - An *except* callback will be called for all methods EXCEPT those that match the passed method names
+The options can take either an array of strings/symbols, or a single string/symbol.
+
+class FooMailer < ActionMailer::Base
+  before_deliver :append_disclaimer, :only => [:email_friend, :announce_something]
+  after_deliver :notify_user, :except => :invite_user
+
+ ...
+end
+
+== Limitations
+
+CURRENTLY, THE before_deliver CALLBACK DOES NOT HALT EXECUTION.  That may be added in the future, but in ther interim you will need to raise to halt.
+
+== Anything Planned?
+
+First, I would like to clean up the code a bit (extract most of the logic into a separate module, etc.).  I apologize for the messiness of the code, at the time I wrote it I just wanted something "that worked" and I was pressed for time.
+
+In terms of features, I would like to do at least three more things with this:
+1) Make it a proper plugin
+2) Allow the before_deliver method to halt sending the email
+3) Add an around_deliver callback which would allow around advice.
+
+Feedback is welcomed.
+
+== License
+
+ActionMailer Callbacks is available under an MIT-style license.
