@@ -67,16 +67,13 @@ end
 
 
 
-== Anything Planned?
+== TODO
 
-First, I would like to clean up the code a bit (extract most of the logic into a separate module, etc.).  I apologize for the messiness of the code, at the time I wrote it I just wanted something "that worked" and I was pressed for time.
-
-In terms of features, I would like to do at least three more things with this:
 1) Add an around_deliver callback which would allow around advice
 2) Add ability to skip filters
 3) Add ability to prepend filters in the chain
 
-Feedback is welcomed.
+Any bug reports or features requests are welcomed.
 
 
 

@@ -1,1 +1,2 @@
-require File.join(File.dirname(__FILE__), 'lib', 'action_mailer_callbacks')
+ActionMailer::Base.send :extend, ActionMailerCallbacks::ClassMethods
+ActionMailer::Base.send :include, ActionMailerCallbacks::InstanceMethods
