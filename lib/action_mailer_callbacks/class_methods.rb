@@ -29,8 +29,8 @@ module ActionMailerCallbacks::ClassMethods
     callable = block || method
     raise 'Specify a block or method to invoke in "before_deliver"' unless callable
 
-    callbacks = class_variable_defined?("@@#{type}_deliver_callbacks") ? class_variable_get("@@#{type}_deliver_callbacks") : ActiveSupport::OrderedHash.new
-    callbacks[callable] = options.symbolize_keys
+    callbacks = class_variable_defined?("@@#{type}_deliver_callbacks") ? class_variable_get("@@#{type}_deliver_callbacks") : ActionMailerCallbacks::Callbacks::CallbackChain.new
+    callbacks << ActionMailerCallbacks::Callbacks::Callback.new(callable, options)
     class_variable_set("@@#{type}_deliver_callbacks", callbacks)
   end
   

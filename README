@@ -10,11 +10,15 @@ If your rails version supports it, you can do:
 
 script/plugin install git://github.com/AnthonyCaliendo/action_mailer_callbacks.git
 
+== Compatibility
+
+This plugin is currently compatible with Rails 2.1 (untested with 2.2).
+
 
 
 == How Do I Use It?
 
-There are 2 main ways to define a callback. In each case, the callback method/block is passed the mail object as the only argument.
+There are 3 ways to define a callback. In each case, the callback method/block is passed the mail object as the only argument.
 
 You may define a callback using a block:
 class FooMailer < ActionMailer::Base
@@ -22,6 +26,7 @@ class FooMailer < ActionMailer::Base
     ...
   end
 end
+
 
 You may also define a callback using a symbol/string for a method name:
 class FooMailer < ActionMailer::Base
@@ -31,6 +36,19 @@ class FooMailer < ActionMailer::Base
     ...
   end
 end
+
+
+You can also pass a Method object directly in:
+class FooMailer < ActionMailer::Base
+  class Handler
+    def self.bar
+      ...
+    end
+  end
+
+  after_deliver Handler.method(:bar)
+end
+
 
 Callbacks take options which can be used to define which mail types (i.e. methods) they will be applied to.
 These options take the format of *only* and *except*.
@@ -76,6 +94,10 @@ end
 Any bug reports or features requests are welcomed.
 
 
+
+=== Contact
+Feel free to email me at:
+action.mailer.callbacks@gmail.com
 
 
 Copyright (c) 2009 Anthony Caliendo, released under the MIT license

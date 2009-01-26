@@ -3,6 +3,7 @@ require 'test/unit'
 
 class ActionMailerCallbacksTest < Test::Unit::TestCase
 
+  # this'd be easier with flexmock... but trying to keep this independent from anything outside of core rails
   class TestMailer < ActionMailer::Base
     cattr_accessor :befores, :afters
     cattr_accessor :before_deliveries, :after_deliveries

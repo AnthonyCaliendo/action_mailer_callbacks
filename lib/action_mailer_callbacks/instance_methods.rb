@@ -27,23 +27,11 @@ module ActionMailerCallbacks::InstanceMethods
 
   private
   def invoke_delivery_callbacks(type, mail)
-    callbacks = self.class.class_variable_defined?("@@#{type}_deliver_callbacks") ? self.class.send(:class_variable_get, "@@#{type}_deliver_callbacks") : {}
-    method = mail.instance_variable_get '@method_name'
+    callback_chain = self.class.class_variable_defined?("@@#{type}_deliver_callbacks") ? self.class.send(:class_variable_get, "@@#{type}_deliver_callbacks") : ActiveSupport::Callbacks::CallbackChain.new
+    method_name = mail.instance_variable_get '@method_name'
 
-    callbacks.each do |callable, options|
-      break if callback_chain_halted
-
-      only = [].push(*options[:only]) if options[:only] && method
-      next if only && !(only.include?(method.to_s) || only.include?(method.to_sym))
-
-      except = [].push(*options[:except]) if options[:except] && method
-      next if except && (except.include?(method.to_s) || except.include?(method.to_sym))
-
-      if callable.is_a? Proc
-        callable.call(mail)
-      else
-        send(callable, mail)
-      end
+    callback_chain.run(:mailer_method_name => method_name, :mail => mail, :target => self) do |result, object|
+      callback_chain_halted
     end
 
     return !callback_chain_halted
