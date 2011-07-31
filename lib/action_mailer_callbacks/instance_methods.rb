@@ -20,7 +20,7 @@ module ActionMailerCallbacks::InstanceMethods
   def deliver_with_callbacks!(mail = @mail)
     self.class.callback_chain_halted = false
     if invoke_delivery_callbacks(:before, mail)
-      deliver_without_callbacks!
+      deliver_without_callbacks!(mail)
       invoke_delivery_callbacks(:after, mail)
     end
   end
